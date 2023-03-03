@@ -1,4 +1,4 @@
-startGame(16, 16, 15);
+startGame(16, 16, 30);
 
 // задаем ширину, высоту для поля, и количество бомб
 function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
@@ -8,7 +8,7 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
   const cellsCount = WIDTH * HEIGHT;
 
   // заполняем поле кнопками
-  field.innerHTML = "<button></button>".repeat(cellsCount);
+  field.innerHTML = '<button class="btn"></button>'.repeat(cellsCount);
   // массив всех кнопок
   const cells = [...field.children];
 
@@ -17,11 +17,11 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
   let closedCount = cellsCount;
 
   // создаем массив бомб
-  const bombs = [...Array(cellsCount).keys()]
+  let bombs = [...Array(cellsCount).keys()]
     // получаем объект с ячейками
     // рандомно сортируем его (сортируем индексы)
     .sort(() => Math.random() - 0.5)
-    // оставляем только количество, которое равно количеству бомб
+    // оставляем только то количество, которое равно количеству бомб
     // получаем рандомные индексы бомб
     .slice(0, BOMBS_COUNT);
 
@@ -32,14 +32,46 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
       return;
     }
 
+    console.log(bombs);
+
     // ищем индекс ячейки в массиве ячеек
     const index = cells.indexOf(event.target);
+
+    // если ячейка заблочена - останавливаем обработчик
+    if (
+      cells[index].classList.contains("block") ||
+      cells[index].classList.contains("question")
+    ) {
+      return;
+    }
+
     // номер колонки - остаток деления индекса на ширину ряда
     const column = index % WIDTH;
     // номер строки - индекс деленный на ширину строки
     const row = Math.floor(index / WIDTH);
     // открываем ячейку по клику
     open(row, column);
+  });
+
+  field.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+    // ищем индекс ячейки в массиве ячеек
+    const index = cells.indexOf(event.target);
+
+    // если на ячейке уже стоит блок - ставим вопрос
+    if (cells[index].classList.contains("block")) {
+      cells[index].classList.remove("block");
+      cells[index].classList.add("question");
+      return;
+    }
+
+    // если на ячейке стоит вопрос - снимаем вопрос
+    if (cells[index].classList.contains("question")) {
+      cells[index].classList.remove("question");
+      return;
+    }
+
+    cells[index].classList.toggle("block");
   });
 
   // проверка границ координат
@@ -53,6 +85,11 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
     // количество мин рядом с ячейкой
     let count = 0;
 
+    // получаем индекс ячейки
+    const index = row * WIDTH + column;
+    // получаем ячейку
+    const cell = cells[index];
+
     // перебираем все соседние ячейки
     // у соседних ячеек колонка или ряд отличаются на +1 или -1
     for (let x = -1; x <= 1; x++) {
@@ -64,6 +101,38 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
         }
       }
     }
+
+    // добавляем ячейкам классы в соответствии с количеством бомб
+    switch (count) {
+      case 1:
+        cell.classList.add("one");
+        break;
+      case 2:
+        cell.classList.add("two");
+        break;
+      case 3:
+        cell.classList.add("three");
+        break;
+      case 4:
+        cell.classList.add("four");
+        break;
+      case 5:
+        cell.classList.add("five");
+        break;
+      case 6:
+        cell.classList.add("six");
+        break;
+      case 7:
+        cell.classList.add("seven");
+        break;
+      case 8:
+        cell.classList.add("eight");
+        break;
+      default:
+        // cell.classList.add("two");
+        break;
+    }
+
     return count;
   }
 
@@ -81,6 +150,8 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
 
     // если ячейка уже открыта - останавливаем функцию
     if (cell.disabled === true) {
+      // даем класс открытой ячейке
+      cell.classList.add("zero");
       return;
     }
     // блокируем ячейку
@@ -88,10 +159,14 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
 
     // проверяем ячейку на наличие бомбы
     if (isBomb(row, column)) {
-      // если внутри бомба - завершаем работу функции
+      // если внутри бомба - завершаем игру
       cell.innerHTML = "x";
-      alert("you loose");
-      startGame(16, 16, 15);
+      // добавляем класс ячейке с красной бомбой
+      cell.classList.add("explosion");
+      // при проигрыше показываем все бомбы
+      showAllBombs();
+      // тут нужно добавить нажатие на смайлик, чтобы начать игру заново
+      // startGame(16, 16, 30);
       return;
     }
 
@@ -100,8 +175,9 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
 
     // если количество закрытых ячеек будет меньше или равно количеству бомб в игре - выигрыш
     if (closedCount <= BOMBS_COUNT) {
-      alert("you won");
-      startGame(16, 16, 15);
+      showAllBombs();
+      // тут нужно нажать на смайлик, чтобы начать игру заново
+      // startGame(16, 16, 30);
       return;
     }
 
@@ -110,7 +186,7 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
 
     // если количество бомб вокруг не равно 0
     if (count !== 0) {
-      cell.innerHTML = count;
+      // cell.innerHTML = count;
       return;
     }
 
@@ -131,5 +207,17 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
     const index = row * WIDTH + column;
 
     return bombs.includes(index);
+  }
+
+  // показываем все бомбы
+  function showAllBombs() {
+    cells.forEach((cell, index) => {
+      if (bombs.includes(index) && cell.classList.contains("block")) {
+        cell.classList.add("opened");
+      }
+      if (bombs.includes(index)) {
+        cells[index].classList.add("hidden");
+      }
+    });
   }
 }

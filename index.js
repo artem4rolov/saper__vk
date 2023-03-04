@@ -221,3 +221,10 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
     });
   }
 }
+
+// таймер
+function timer() {
+  // хуета
+}
+
+// timer();

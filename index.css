@@ -67,6 +67,7 @@ button {
 }
 
 /* bombs */
+
 .opened.hidden.block {
   background: url("./sprait.png") no-repeat;
   background-position: -119px -50px;
@@ -80,4 +81,111 @@ button {
 .hidden {
   background: url("./sprait.png") no-repeat;
   background-position: -85px -50px;
+}
+
+/* timer */
+
+.sprite-container {
+  height: 24px;
+  width: 42px;
+  display: flex;
+  align-items: center;
+  background-color: black;
+}
+
+/* правый таймер с секундомером */
+/* крайняя правая цифра */
+.sprite-img-1 {
+  margin: 0;
+  height: 24px;
+  width: 14px;
+  background: url("./sprait.png") 14px 0px;
+  animation: play 1000s steps(10) infinite;
+}
+
+/* средня цифра */
+.sprite-img-2 {
+  margin: 0;
+  height: 24px;
+  width: 14px;
+  background: url("./sprait.png") 14px 0px;
+  animation: play 100s steps(10) infinite;
+}
+
+/* крайняя левая цифра */
+.sprite-img-3 {
+  margin: 0;
+  height: 24px;
+  width: 14px;
+  background: url("./sprait.png") 14px 0px;
+  animation: play 10s steps(10) infinite;
+}
+
+/* левый таймер с минутами */
+/* сначала делаем плейсхолдер на одну минуту (даем класс заготовленный) со значением 40
+затем даем класс каждой цифре, где одна будет меняться
+спустя 10 минут, вторая спустя минуту */
+/* при этом для правой цифры сразу запускаем анимацию, поскольку цифра 0 нам также нужна будет на 20 секундах и на 10 секундах */
+/* левая цифра */
+.sprite-img-4 {
+  margin: 0;
+  height: 24px;
+  width: 14px;
+  background: url("./sprait.png") -25px 0px;
+  animation: playBackMinute1 10s steps(10) infinite;
+}
+
+/* правая цифра */
+.sprite-img-5 {
+  margin: 0;
+  height: 24px;
+  width: 14px;
+  background: url("./sprait.png") 14px 0px;
+  /* animation: playBackMinute2 10s steps(10) infinite; */
+}
+
+/* пауза */
+.paused {
+  animation-play-state: paused;
+  animation-play-state: running;
+}
+
+/* заготовленные классы длительностью 1 минуту для левых цифр */
+.placeholder-1 {
+  margin: 0;
+  height: 24px;
+  width: 14px;
+  background: url("./sprait.png") -42px 0px;
+}
+
+.placeholder-2 {
+  margin: 0;
+  height: 24px;
+  width: 14px;
+  background: url("./sprait.png") 14px 0px;
+}
+/* ........................................................ */
+/* ........................................................ */
+/* ........................................................ */
+/* анимация для минут слева */
+/* анимация для левой цифры */
+@keyframes playBackMinute1 {
+  100% {
+    background-position: 30px 0;
+  }
+}
+/* анимация для правой цифры */
+@keyframes playBackMinute2 {
+  100% {
+    background-position: 153px 0;
+  }
+}
+/* ........................................................ */
+/* ........................................................ */
+/* ........................................................ */
+/* анимация для правых цифр */
+@keyframes play {
+  100% {
+    background-position: -125px 0;
+  }
 }

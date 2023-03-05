@@ -69,6 +69,8 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
     // получаем рандомные индексы бомб
     .slice(0, BOMBS_COUNT);
 
+  console.log(bombs);
+
   // нажатие на смайлик перезапускает игру
   emotions.addEventListener("click", () => {
     startGame(16, 16, 30);
@@ -99,6 +101,26 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
       return;
     }
 
+    // ищем индекс ячейки в массиве ячеек
+    const index = cells.indexOf(event.target);
+
+    // если это первый клик (количество неоткрытых ячеек равно количеству ячеек на поле)
+    if (closedCount === cellsCount) {
+      // исключаем из массива бомб индекс нашей клетки, на которую мы нажали
+      // т.е. первый клик не может быть по бомбе
+
+      if (bombs.includes(index)) {
+        let eventIndex = bombs.indexOf(index);
+        bombs.splice(eventIndex, 1);
+        // номер колонки - остаток деления индекса на ширину ряда
+        const column = index % WIDTH;
+        // номер строки - индекс деленный на ширину строки
+        const row = Math.floor(index / WIDTH);
+        // открываем ячейку по клику
+        open(row, column);
+      }
+    }
+
     // запускаем таймер
     minutes1.classList.remove("placeholder-1");
     minutes1.classList.add("sprite-img-1");
@@ -112,9 +134,6 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
     seconds2.classList.add("sprite-img-4");
     seconds3.classList.remove("placeholder-2");
     seconds3.classList.add("sprite-img-5");
-
-    // ищем индекс ячейки в массиве ячеек
-    const index = cells.indexOf(event.target);
 
     // если ячейка заблочена - останавливаем обработчик
     if (

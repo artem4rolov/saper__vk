@@ -69,8 +69,6 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
     // получаем рандомные индексы бомб
     .slice(0, BOMBS_COUNT);
 
-  console.log(bombs);
-
   // нажатие на смайлик перезапускает игру
   emotions.addEventListener("click", () => {
     startGame(16, 16, 30);

@@ -1,91 +1,53 @@
-.field {
-  display: grid;
-  grid-template-columns: repeat(16, 16px);
-  /* gap: 0; */
-  /* border: 3px solid gray; */
+/* APP */
+.app {
+  width: 256px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border-top: 14px ridge #eee7e7;
+  border-right: 16px ridge #ededed;
+  border-bottom: 16px ridge #dedede;
+  border-left: 16px ridge #e8e8e8;
+
+  border-width: 13px 13px 13px 13px;
+  border-color: #eee7e7 #ededed #dedede #e8e8e8;
 }
 
-button {
-  height: 16px;
-  font-size: 16px;
-  border: none;
-  margin: 0;
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 16px ridge #dedede;
+  align-items: center;
+  background-color: #ebebeb;
+  padding: 5px;
 }
 
-.btn {
-  background: url("./sprait.png") no-repeat;
-  background-position: 0px -50px;
+.emotions {
+  width: 25px;
+  height: 28px;
+  background: url("./sprite.png") 0px -23px;
 }
 
-.block {
-  background: url("./sprait.png") no-repeat;
-  background-position: -33px -50px;
+.emotions:active {
+  opacity: 0.5;
 }
 
-.question {
-  background: url("./sprait.png") no-repeat;
-  background-position: -50px -50px;
+.emotions-win {
+  background: url("./sprite.png") 58px -23px;
 }
 
-/* bombs around count */
-
-.zero {
-  background: url("./sprait.png") no-repeat;
-  background-position: -17px -50px;
-}
-.one {
-  background: url("./sprait.png") no-repeat;
-  background-position: 0px -67px;
-}
-.two {
-  background: url("./sprait.png") no-repeat;
-  background-position: -17px -67px;
-}
-.three {
-  background: url("./sprait.png") no-repeat;
-  background-position: -34px -67px;
-}
-.four {
-  background: url("./sprait.png") no-repeat;
-  background-position: -51px -67px;
-}
-.five {
-  background: url("./sprait.png") no-repeat;
-  background-position: -68px -67px;
-}
-.six {
-  background: url("./sprait.png") no-repeat;
-  background-position: -85px -67px;
-}
-.seven {
-  background: url("./sprait.png") no-repeat;
-  background-position: -100px -67px;
-}
-.eight {
-  background: url("./sprait.png") no-repeat;
-  background-position: -117px -67px;
+.emotions-loose {
+  background: url("./sprite.png") 31px -23px;
 }
 
-/* bombs */
-
-.opened.hidden.block {
-  background: url("./sprait.png") no-repeat;
-  background-position: -119px -50px;
+.emotions-warning {
+  background: url("./sprite.png") 85px -23px;
 }
+/* timer sec */
 
-.explosion.hidden {
-  background: url("./sprait.png") no-repeat;
-  background-position: -102px -50px;
-}
-
-.hidden {
-  background: url("./sprait.png") no-repeat;
-  background-position: -85px -50px;
-}
-
-/* timer */
-
-.sprite-container {
+.sprite-container-2 {
   height: 24px;
   width: 42px;
   display: flex;
@@ -94,31 +56,41 @@ button {
 }
 
 /* правый таймер с секундомером */
-/* крайняя правая цифра */
-.sprite-img-1 {
-  margin: 0;
-  height: 24px;
-  width: 14px;
-  background: url("./sprait.png") 14px 0px;
-  animation: play 1000s steps(10) infinite;
-}
-
-/* средня цифра */
-.sprite-img-2 {
-  margin: 0;
-  height: 24px;
-  width: 14px;
-  background: url("./sprait.png") 14px 0px;
-  animation: play 100s steps(10) infinite;
-}
-
 /* крайняя левая цифра */
 .sprite-img-3 {
   margin: 0;
   height: 24px;
   width: 14px;
-  background: url("./sprait.png") 14px 0px;
+  background: url("./sprite.png") 14px 0px;
+  animation: play 1000s steps(10) infinite;
+}
+
+/* средня цифра */
+.sprite-img-4 {
+  margin: 0;
+  height: 24px;
+  width: 14px;
+  background: url("./sprite.png") 14px 0px;
+  animation: play 100s steps(10) infinite;
+}
+
+/* крайняя правая цифра */
+.sprite-img-5 {
+  margin: 0;
+  height: 24px;
+  width: 14px;
+  background: url("./sprite.png") 14px 0px;
   animation: play 10s steps(10) infinite;
+}
+
+/* ***************************************************** */
+/* timer-min */
+.sprite-container-1 {
+  height: 24px;
+  width: 29px;
+  display: flex;
+  align-items: center;
+  background-color: black;
 }
 
 /* левый таймер с минутами */
@@ -127,42 +99,23 @@ button {
 спустя 10 минут, вторая спустя минуту */
 /* при этом для правой цифры сразу запускаем анимацию, поскольку цифра 0 нам также нужна будет на 20 секундах и на 10 секундах */
 /* левая цифра */
-.sprite-img-4 {
+/* смена каждые 10 минут */
+.sprite-img-1 {
   margin: 0;
   height: 24px;
   width: 14px;
-  background: url("./sprait.png") -25px 0px;
-  animation: playBackMinute1 10s steps(10) infinite;
+  background: url("./sprite.png") -28px 0px;
+  animation: playBackMinute1 6000s steps(4) infinite;
 }
 
 /* правая цифра */
-.sprite-img-5 {
+/* смена каждую минуту */
+.sprite-img-2 {
   margin: 0;
   height: 24px;
   width: 14px;
-  background: url("./sprait.png") 14px 0px;
-  /* animation: playBackMinute2 10s steps(10) infinite; */
-}
-
-/* пауза */
-.paused {
-  animation-play-state: paused;
-  animation-play-state: running;
-}
-
-/* заготовленные классы длительностью 1 минуту для левых цифр */
-.placeholder-1 {
-  margin: 0;
-  height: 24px;
-  width: 14px;
-  background: url("./sprait.png") -42px 0px;
-}
-
-.placeholder-2 {
-  margin: 0;
-  height: 24px;
-  width: 14px;
-  background: url("./sprait.png") 14px 0px;
+  background: url("./sprite.png") 28px 0px;
+  animation: playBackMinute2 600s steps(10) infinite;
 }
 /* ........................................................ */
 /* ........................................................ */
@@ -171,13 +124,13 @@ button {
 /* анимация для левой цифры */
 @keyframes playBackMinute1 {
   100% {
-    background-position: 30px 0;
+    background-position: 29px 0;
   }
 }
 /* анимация для правой цифры */
 @keyframes playBackMinute2 {
   100% {
-    background-position: 153px 0;
+    background-position: 168px 0;
   }
 }
 /* ........................................................ */
@@ -188,4 +141,112 @@ button {
   100% {
     background-position: -125px 0;
   }
+}
+
+/* пауза */
+.paused {
+  animation-play-state: paused;
+}
+
+/* заготовленные классы для цифр */
+/* четверка */
+.placeholder-1 {
+  margin: 0;
+  height: 24px;
+  width: 14px;
+  background: url("./sprite.png") -42px 0px;
+}
+
+/* ноль */
+.placeholder-2 {
+  margin: 0;
+  height: 24px;
+  width: 14px;
+  background: url("./sprite.png") 14px 0px;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: repeat(16, 16px);
+  padding: 0;
+  gap: 0;
+  background-color: #c3c1c1;
+}
+
+button {
+  height: 16px;
+  font-size: 16px;
+  border: none;
+  margin: 0;
+}
+
+.btn {
+  background: url("./sprite.png") no-repeat;
+  background-position: 0px -50px;
+}
+
+.block {
+  background: url("./sprite.png") no-repeat;
+  background-position: -33px -50px;
+}
+
+.question {
+  background: url("./sprite.png") no-repeat;
+  background-position: -50px -50px;
+}
+
+/* bombs around count */
+
+.zero {
+  background: url("./sprite.png") no-repeat;
+  background-position: -17px -50px;
+}
+.one {
+  background: url("./sprite.png") no-repeat;
+  background-position: 0px -67px;
+}
+.two {
+  background: url("./sprite.png") no-repeat;
+  background-position: -17px -67px;
+}
+.three {
+  background: url("./sprite.png") no-repeat;
+  background-position: -34px -67px;
+}
+.four {
+  background: url("./sprite.png") no-repeat;
+  background-position: -51px -67px;
+}
+.five {
+  background: url("./sprite.png") no-repeat;
+  background-position: -68px -67px;
+}
+.six {
+  background: url("./sprite.png") no-repeat;
+  background-position: -85px -67px;
+}
+.seven {
+  background: url("./sprite.png") no-repeat;
+  background-position: -100px -67px;
+}
+.eight {
+  background: url("./sprite.png") no-repeat;
+  background-position: -117px -67px;
+}
+
+/* bombs */
+
+.opened.hidden.block {
+  background: url("./sprite.png") no-repeat;
+  background-position: -119px -50px;
+}
+
+.explosion.hidden {
+  background: url("./sprite.png") no-repeat;
+  background-position: -102px -50px;
+}
+
+.hidden {
+  background: url("./sprite.png") no-repeat;
+  background-position: -85px -50px;
 }

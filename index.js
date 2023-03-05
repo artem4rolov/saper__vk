@@ -2,6 +2,50 @@ startGame(16, 16, 30);
 
 // задаем ширину, высоту для поля, и количество бомб
 function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
+  // смайлик по центру
+  const emotions = document.querySelector(".emotions");
+  // таймер с минутами слева
+  // первая цифра минут
+  const minutes1 = document.querySelector(".minutes-1");
+  // вторая цифра минут
+  const minutes2 = document.querySelector(".minutes-2");
+  // секундомер справа
+  // первая цифра секунд *100
+  const seconds1 = document.querySelector(".seconds-1");
+  // вторая цифра секунд *10
+  const seconds2 = document.querySelector(".seconds-2");
+  // третья цифра секунд *1
+  const seconds3 = document.querySelector(".seconds-3");
+
+  // удаляем классы для смайлика
+  emotions.classList.remove("emotions-loose");
+  emotions.classList.remove("emotions-win");
+
+  // останавливаем минутный таймер и добавляем заглушки
+  // левая цифра
+  minutes1.classList.remove("sprite-img-1");
+  minutes1.classList.remove("paused");
+  minutes1.classList.add("placeholder-1");
+  // правая цифра
+  minutes2.classList.remove("sprite-img-2");
+  minutes2.classList.remove("paused");
+  minutes2.classList.add("placeholder-2");
+
+  // останавливаем секундомер и добавляем заглушки
+  // первая цифра
+  seconds1.classList.remove("sprite-img-3");
+  seconds1.classList.remove("paused");
+  seconds1.classList.add("placeholder-2");
+  // вторая цифра
+  seconds2.classList.remove("sprite-img-4");
+  seconds2.classList.remove("paused");
+  seconds2.classList.add("placeholder-2");
+  // третья цифра
+  seconds3.classList.remove("sprite-img-5");
+  seconds3.classList.remove("paused");
+  seconds3.classList.add("placeholder-2");
+
+  // поле с кнопками
   const field = document.querySelector(".field");
 
   // количество ячеек на поле
@@ -25,6 +69,29 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
     // получаем рандомные индексы бомб
     .slice(0, BOMBS_COUNT);
 
+  // нажатие на смайлик перезапускает игру
+  emotions.addEventListener("click", () => {
+    startGame(16, 16, 30);
+  });
+
+  // при нажатии левой кнопки мыши меняется смайлик
+  field.addEventListener("mousedown", (event) => {
+    if (event.target.tagName !== "BUTTON") {
+      return;
+    }
+    // уточняем, что это именно левая кнопка мыши
+    event.which == 1 && emotions.classList.add("emotions-warning");
+  });
+
+  // при отпускании левой кнопки мыши меняется смайлик
+  field.addEventListener("mouseup", (event) => {
+    if (event.target.tagName !== "BUTTON") {
+      return;
+    }
+    // уточняем, что это именно левая кнопка мыши
+    event.which == 1 && emotions.classList.remove("emotions-warning");
+  });
+
   // клик на поле
   field.addEventListener("click", (event) => {
     // если клик произошел не по кнопке (не по полю) - ничего не делаем
@@ -32,7 +99,19 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
       return;
     }
 
-    console.log(bombs);
+    // запускаем таймер
+    minutes1.classList.remove("placeholder-1");
+    minutes1.classList.add("sprite-img-1");
+    minutes2.classList.remove("placeholder-2");
+    minutes2.classList.add("sprite-img-2");
+
+    // запускаем секундомер
+    seconds1.classList.remove("placeholder-2");
+    seconds1.classList.add("sprite-img-3");
+    seconds2.classList.remove("placeholder-2");
+    seconds2.classList.add("sprite-img-4");
+    seconds3.classList.remove("placeholder-2");
+    seconds3.classList.add("sprite-img-5");
 
     // ищем индекс ячейки в массиве ячеек
     const index = cells.indexOf(event.target);
@@ -55,6 +134,10 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
 
   field.addEventListener("contextmenu", (event) => {
     event.preventDefault();
+
+    if (closedCount === cellsCount) {
+      return;
+    }
     // ищем индекс ячейки в массиве ячеек
     const index = cells.indexOf(event.target);
 
@@ -160,13 +243,19 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
     // проверяем ячейку на наличие бомбы
     if (isBomb(row, column)) {
       // если внутри бомба - завершаем игру
-      cell.innerHTML = "x";
       // добавляем класс ячейке с красной бомбой
       cell.classList.add("explosion");
       // при проигрыше показываем все бомбы
       showAllBombs();
-      // тут нужно добавить нажатие на смайлик, чтобы начать игру заново
-      // startGame(16, 16, 30);
+      // останавливаем таймер
+      minutes1.classList.add("paused");
+      minutes2.classList.add("paused");
+      // останавливаем секундомер
+      seconds1.classList.add("paused");
+      seconds2.classList.add("paused");
+      seconds3.classList.add("paused");
+      // меняем смайлик
+      emotions.classList.add("emotions-loose");
       return;
     }
 
@@ -175,9 +264,17 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
 
     // если количество закрытых ячеек будет меньше или равно количеству бомб в игре - выигрыш
     if (closedCount <= BOMBS_COUNT) {
+      // при выигрыше показываем все бомбы
       showAllBombs();
-      // тут нужно нажать на смайлик, чтобы начать игру заново
-      // startGame(16, 16, 30);
+      // останавливаем таймер
+      minutes1.classList.add("paused");
+      minutes2.classList.add("paused");
+      // останавливаем секундомер
+      seconds1.classList.add("paused");
+      seconds2.classList.add("paused");
+      seconds3.classList.add("paused");
+      // меняем смайлик
+      emotions.classList.add("emotions-win");
       return;
     }
 
@@ -186,7 +283,6 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
 
     // если количество бомб вокруг не равно 0
     if (count !== 0) {
-      // cell.innerHTML = count;
       return;
     }
 
@@ -218,6 +314,8 @@ function startGame(WIDTH, HEIGHT, BOMBS_COUNT) {
       if (bombs.includes(index)) {
         cells[index].classList.add("hidden");
       }
+      // блокируем поле
+      cell.disabled = true;
     });
   }
 }
